@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36623.8 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ButtonCounterApp", "ButtonCounterApp.csproj", "{A968820B-031C-4112-AABA-AF55994104CC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A968820B-031C-4112-AABA-AF55994104CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A968820B-031C-4112-AABA-AF55994104CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A968820B-031C-4112-AABA-AF55994104CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A968820B-031C-4112-AABA-AF55994104CC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DB1BA699-13EB-4AA5-9C8C-D028CD4363B1}
+	EndGlobalSection
+EndGlobal
