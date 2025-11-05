@@ -10,17 +10,26 @@ namespace Lab4_Variant16
             InitializeComponent();
         }
 
-        public void ShowResults(List<DataGridViewRow> results)
+        public void ShowResults(List<DataGridViewRow> rows)
         {
+            dgwResults.Rows.Clear();
+            dgwResults.Columns.Clear();
+
+            // Добавляем столбцы
             dgwResults.Columns.Add("colLastName", "Фамилия");
             dgwResults.Columns.Add("colFirstName", "Имя");
-            // Добавьте остальные колонки аналогично...
+            dgwResults.Columns.Add("colMiddleName", "Отчество");
+            dgwResults.Columns.Add("colGender", "Пол");
 
-            foreach (DataGridViewRow row in results)
+            // Заполняем строки
+            foreach (var row in rows)
             {
-                int newRowIndex = dgwResults.Rows.Add();
-                dgwResults.Rows[newRowIndex].Cells[0].Value = row.Cells["colLastName"].Value;
-                // Аналогично для остальных
+                dgwResults.Rows.Add(
+                    row.Cells["colLastName"].Value,
+                    row.Cells["colFirstName"].Value,
+                    row.Cells["colMiddleName"].Value,
+                    row.Cells["colGender"].Value
+                );
             }
         }
     }

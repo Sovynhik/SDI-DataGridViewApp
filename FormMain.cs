@@ -1,6 +1,4 @@
-﻿using Lab4_Variant16;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -10,146 +8,224 @@ namespace Lab4_Variant16
 {
     public partial class FormMain : Form
     {
-        private DataSet ds = new DataSet();
-        private string xmlFilePath = "users.xml";
+        private readonly string xmlFilePath = "users.xml";
 
         public FormMain()
         {
             InitializeComponent();
-            // Инициализация DataGridView
-            dgwUsers.CellClick += dgwUsers_CellClick;
+            ConfigureDataGridView();
+            LoadXmlIfExists();
+        }
+
+        private void ConfigureDataGridView()
+        {
+            dgwUsers.Columns.Clear();
+
+            // === Столбцы ===
+            dgwUsers.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "colLastName",
+                HeaderText = "Фамилия",
+                Width = 120
+            });
+
+            dgwUsers.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "colFirstName",
+                HeaderText = "Имя",
+                Width = 100
+            });
+
+            dgwUsers.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "colMiddleName",
+                HeaderText = "Отчество",
+                Width = 120
+            });
+
+            dgwUsers.Columns.Add(new DataGridViewCheckBoxColumn
+            {
+                Name = "colActive",
+                HeaderText = "Активен",
+                Width = 70
+            });
+
+            dgwUsers.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "colRegDate",
+                HeaderText = "Дата регистрации",
+                Width = 130
+            });
+
+            var colGender = new DataGridViewComboBoxColumn
+            {
+                Name = "colGender",
+                HeaderText = "Пол",
+                Width = 80
+            };
+            colGender.Items.Add("Мужской");
+            colGender.Items.Add("Женский");
+            dgwUsers.Columns.Add(colGender);
+
+            dgwUsers.Columns.Add(new DataGridViewImageColumn
+            {
+                Name = "colPhoto",
+                HeaderText = "Фото",
+                ImageLayout = DataGridViewImageCellLayout.Zoom,
+                Width = 80
+            });
+
+            // === Настройки ===
+            dgwUsers.CellClick += DgwUsers_CellClick;
             dgwUsers.MultiSelect = false;
             dgwUsers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgwUsers.AllowUserToAddRows = false;
             dgwUsers.AllowUserToDeleteRows = false;
-            // Загрузка данных при старте, если файл существует
-            if (File.Exists(xmlFilePath))
-            {
-                LoadFromXml();
-            }
         }
 
-        // Обработчик щелчка по ячейке (заполнение полей для редактирования)
-        private void dgwUsers_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void LoadXmlIfExists()
         {
-            if (dgwUsers.SelectedRows.Count > 0)
-            {
-                txtLastName.Text = dgwUsers.SelectedRows[0].Cells["colLastName"].Value.ToString();
-                txtFirstName.Text = dgwUsers.SelectedRows[0].Cells["colFirstName"].Value.ToString();
-                txtMiddleName.Text = dgwUsers.SelectedRows[0].Cells["colMiddleName"].Value.ToString();
-                cbActive.Checked = (bool)dgwUsers.SelectedRows[0].Cells["colActive"].Value;
-                dtpRegDate.Value = (DateTime)dgwUsers.SelectedRows[0].Cells["colRegDate"].Value;
-                cmbGender.Text = dgwUsers.SelectedRows[0].Cells["colGender"].Value.ToString();
-                // Для изображения (если есть)
-                pbPhoto.Image = (Image)dgwUsers.SelectedRows[0].Cells["colPhoto"].Value;
-            }
+            if (File.Exists(xmlFilePath))
+                LoadFromXml();
         }
 
-        // Кнопка "Добавить"
+        private void DgwUsers_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgwUsers.SelectedRows.Count == 0) return;
+
+            var row = dgwUsers.SelectedRows[0];
+            txtLastName.Text = row.Cells["colLastName"].Value?.ToString() ?? "";
+            txtFirstName.Text = row.Cells["colFirstName"].Value?.ToString() ?? "";
+            txtMiddleName.Text = row.Cells["colMiddleName"].Value?.ToString() ?? "";
+            cbActive.Checked = row.Cells["colActive"].Value is bool b && b;
+            dtpRegDate.Value = row.Cells["colRegDate"].Value is DateTime dt ? dt : DateTime.Now;
+            cmbGender.Text = row.Cells["colGender"].Value?.ToString() ?? "";
+            pbPhoto.Image = row.Cells["colPhoto"].Value as Image;
+        }
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            int rowIndex = dgwUsers.Rows.Add();
-            dgwUsers.Rows[rowIndex].Cells["colLastName"].Value = txtLastName.Text;
-            dgwUsers.Rows[rowIndex].Cells["colFirstName"].Value = txtFirstName.Text;
-            dgwUsers.Rows[rowIndex].Cells["colMiddleName"].Value = txtMiddleName.Text;
-            dgwUsers.Rows[rowIndex].Cells["colActive"].Value = cbActive.Checked;
-            dgwUsers.Rows[rowIndex].Cells["colRegDate"].Value = dtpRegDate.Value;
-            dgwUsers.Rows[rowIndex].Cells["colGender"].Value = cmbGender.Text;
-            dgwUsers.Rows[rowIndex].Cells["colPhoto"].Value = pbPhoto.Image;
-            ClearFields();
+            int idx = dgwUsers.Rows.Add();
+            FillRow(dgwUsers.Rows[idx]);
+            ClearInputFields();
         }
 
-        // Кнопка "Изменить"
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            if (dgwUsers.SelectedRows.Count > 0)
+            if (dgwUsers.SelectedRows.Count == 0)
             {
-                dgwUsers.SelectedRows[0].Cells["colLastName"].Value = txtLastName.Text;
-                dgwUsers.SelectedRows[0].Cells["colFirstName"].Value = txtFirstName.Text;
-                dgwUsers.SelectedRows[0].Cells["colMiddleName"].Value = txtMiddleName.Text;
-                dgwUsers.SelectedRows[0].Cells["colActive"].Value = cbActive.Checked;
-                dgwUsers.SelectedRows[0].Cells["colRegDate"].Value = dtpRegDate.Value;
-                dgwUsers.SelectedRows[0].Cells["colGender"].Value = cmbGender.Text;
-                dgwUsers.SelectedRows[0].Cells["colPhoto"].Value = pbPhoto.Image;
-                ClearFields();
+                MessageBox.Show("Выберите строку для редактирования.", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            else
-            {
-                MessageBox.Show("Выберите строку для редактирования.");
-            }
+            FillRow(dgwUsers.SelectedRows[0]);
+            ClearInputFields();
         }
 
-        // Кнопка "Удалить"
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (dgwUsers.SelectedRows.Count > 0)
+            if (dgwUsers.SelectedRows.Count == 0)
             {
-                dgwUsers.Rows.Remove(dgwUsers.SelectedRows[0]);
-                ClearFields();
+                MessageBox.Show("Выберите строку для удаления.", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            else
-            {
-                MessageBox.Show("Выберите строку для удаления.");
-            }
+            dgwUsers.Rows.Remove(dgwUsers.SelectedRows[0]);
         }
 
-        // Кнопка "Очистить таблицу"
         private void btnClear_Click(object sender, EventArgs e)
         {
-            dgwUsers.Rows.Clear();
-            ClearFields();
+            if (dgwUsers.Rows.Count > 0 && MessageBox.Show("Очистить всю таблицу?", "Подтверждение", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                dgwUsers.Rows.Clear();
+            }
         }
 
-        // Кнопка "Сохранить как XML"
-        private void btnSaveXml_Click(object sender, EventArgs e)
-        {
-            SaveToXml();
-        }
+        private void btnSaveXml_Click(object sender, EventArgs e) => SaveToXml();
+        private void btnLoadXml_Click(object sender, EventArgs e) => LoadFromXml();
 
-        // Кнопка "Загрузить XML"
-        private void btnLoadXml_Click(object sender, EventArgs e)
-        {
-            LoadFromXml();
-        }
-
-        // Кнопка "Поиск" (по фамилии, вывод в модальном окне)
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            FormSearch formSearch = new FormSearch();
-            List<DataGridViewRow> results = new List<DataGridViewRow>();
+            var results = new System.Collections.Generic.List<DataGridViewRow>();
+            string query = txtSearch.Text.Trim().ToLower();
+
             foreach (DataGridViewRow row in dgwUsers.Rows)
             {
-                if (row.Cells["colLastName"].Value.ToString().ToLower().Contains(txtSearch.Text.ToLower()))
+                if (row.Cells["colLastName"].Value?.ToString().ToLower().Contains(query) == true)
                 {
                     results.Add(row);
                 }
             }
-            formSearch.ShowResults(results);
-            formSearch.ShowDialog();
+
+            using (var form = new FormSearch())
+            {
+                form.ShowResults(results);
+                form.ShowDialog();
+            }
         }
 
-        // Метод сохранения в XML
+        private void btnBrowsePhoto_Click(object sender, EventArgs e)
+        {
+            using (var ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "Изображения|*.jpg;*.jpeg;*.png;*.bmp";
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    pbPhoto.Image = Image.FromFile(ofd.FileName);
+                }
+            }
+        }
+
+        private void FillRow(DataGridViewRow row)
+        {
+            row.Cells["colLastName"].Value = txtLastName.Text;
+            row.Cells["colFirstName"].Value = txtFirstName.Text;
+            row.Cells["colMiddleName"].Value = txtMiddleName.Text;
+            row.Cells["colActive"].Value = cbActive.Checked;
+            row.Cells["colRegDate"].Value = dtpRegDate.Value;
+            row.Cells["colGender"].Value = cmbGender.Text;
+            row.Cells["colPhoto"].Value = pbPhoto.Image;
+        }
+
+        private void ClearInputFields()
+        {
+            txtLastName.Clear();
+            txtFirstName.Clear();
+            txtMiddleName.Clear();
+            cbActive.Checked = false;
+            dtpRegDate.Value = DateTime.Now;
+            cmbGender.SelectedIndex = -1;
+            pbPhoto.Image = null;
+        }
+
         private void SaveToXml()
         {
-            DataTable dt = new DataTable("Users");
+            var ds = new DataSet();
+            var dt = new DataTable("Users");
             dt.Columns.Add("LastName", typeof(string));
             dt.Columns.Add("FirstName", typeof(string));
             dt.Columns.Add("MiddleName", typeof(string));
             dt.Columns.Add("Active", typeof(bool));
             dt.Columns.Add("RegDate", typeof(DateTime));
             dt.Columns.Add("Gender", typeof(string));
-            dt.Columns.Add("Photo", typeof(Image));
+            dt.Columns.Add("Photo", typeof(byte[]));
 
             foreach (DataGridViewRow row in dgwUsers.Rows)
             {
-                DataRow dr = dt.NewRow();
+                var dr = dt.NewRow();
                 dr["LastName"] = row.Cells["colLastName"].Value;
                 dr["FirstName"] = row.Cells["colFirstName"].Value;
                 dr["MiddleName"] = row.Cells["colMiddleName"].Value;
                 dr["Active"] = row.Cells["colActive"].Value;
                 dr["RegDate"] = row.Cells["colRegDate"].Value;
                 dr["Gender"] = row.Cells["colGender"].Value;
-                dr["Photo"] = row.Cells["colPhoto"].Value;
+
+                if (row.Cells["colPhoto"].Value is Image img)
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        img.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                        dr["Photo"] = ms.ToArray();
+                    }
+                }
                 dt.Rows.Add(dr);
             }
 
@@ -157,7 +233,7 @@ namespace Lab4_Variant16
             try
             {
                 ds.WriteXml(xmlFilePath);
-                MessageBox.Show("Данные сохранены в XML.");
+                MessageBox.Show("Данные сохранены в users.xml", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -165,57 +241,47 @@ namespace Lab4_Variant16
             }
         }
 
-        // Метод загрузки из XML
         private void LoadFromXml()
         {
+            if (!File.Exists(xmlFilePath))
+            {
+                MessageBox.Show("Файл users.xml не найден.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             if (dgwUsers.Rows.Count > 0)
             {
-                if (MessageBox.Show("Таблица не пуста. Очистить?", "Предупреждение", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    dgwUsers.Rows.Clear();
-                }
-                else
-                {
+                if (MessageBox.Show("Таблица не пуста. Очистить перед загрузкой?", "Загрузка", MessageBoxButtons.YesNo) != DialogResult.Yes)
                     return;
-                }
+                dgwUsers.Rows.Clear();
             }
 
-            if (File.Exists(xmlFilePath))
+            var ds = new DataSet();
+            ds.ReadXml(xmlFilePath);
+
+            if (!ds.Tables.Contains("Users")) return;
+
+            foreach (DataRow dr in ds.Tables["Users"].Rows)
             {
-                ds.ReadXml(xmlFilePath);
-                if (ds.Tables.Contains("Users"))
+                int idx = dgwUsers.Rows.Add();
+                var row = dgwUsers.Rows[idx];
+                row.Cells["colLastName"].Value = dr["LastName"];
+                row.Cells["colFirstName"].Value = dr["FirstName"];
+                row.Cells["colMiddleName"].Value = dr["MiddleName"];
+                row.Cells["colActive"].Value = dr["Active"];
+                row.Cells["colRegDate"].Value = dr["RegDate"];
+                row.Cells["colGender"].Value = dr["Gender"];
+
+                if (dr["Photo"] is byte[] bytes && bytes.Length > 0)
                 {
-                    DataTable dt = ds.Tables["Users"];
-                    foreach (DataRow dr in dt.Rows)
+                    using (var ms = new MemoryStream(bytes))
                     {
-                        int rowIndex = dgwUsers.Rows.Add();
-                        dgwUsers.Rows[rowIndex].Cells["colLastName"].Value = dr["LastName"];
-                        dgwUsers.Rows[rowIndex].Cells["colFirstName"].Value = dr["FirstName"];
-                        dgwUsers.Rows[rowIndex].Cells["colMiddleName"].Value = dr["MiddleName"];
-                        dgwUsers.Rows[rowIndex].Cells["colActive"].Value = dr["Active"];
-                        dgwUsers.Rows[rowIndex].Cells["colRegDate"].Value = dr["RegDate"];
-                        dgwUsers.Rows[rowIndex].Cells["colGender"].Value = dr["Gender"];
-                        dgwUsers.Rows[rowIndex].Cells["colPhoto"].Value = dr["Photo"];
+                        row.Cells["colPhoto"].Value = Image.FromStream(ms);
                     }
-                    MessageBox.Show("Данные загружены из XML.");
                 }
             }
-            else
-            {
-                MessageBox.Show("XML-файл не найден.");
-            }
-        }
 
-        // Очистка полей ввода
-        private void ClearFields()
-        {
-            txtLastName.Text = "";
-            txtFirstName.Text = "";
-            txtMiddleName.Text = "";
-            cbActive.Checked = false;
-            dtpRegDate.Value = DateTime.Now;
-            cmbGender.Text = "";
-            pbPhoto.Image = null;
+            MessageBox.Show("Данные загружены из users.xml", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

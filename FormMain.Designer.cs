@@ -1,4 +1,7 @@
-﻿namespace Lab4_Variant16
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace Lab4_Variant16
 {
     partial class FormMain
     {
@@ -7,13 +10,9 @@
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
-            {
                 components.Dispose();
-            }
             base.Dispose(disposing);
         }
-
-        #region Windows Form Designer generated code
 
         private void InitializeComponent()
         {
@@ -36,13 +35,6 @@
             this.pbPhoto = new System.Windows.Forms.PictureBox();
             this.btnBrowsePhoto = new System.Windows.Forms.Button();
             this.dgwUsers = new System.Windows.Forms.DataGridView();
-            this.colLastName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colFirstName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMiddleName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colActive = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.colRegDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colGender = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.colPhoto = new System.Windows.Forms.DataGridViewImageColumn();
             this.panelButtons = new System.Windows.Forms.TableLayoutPanel();
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
@@ -61,30 +53,24 @@
             this.panelButtons.SuspendLayout();
             this.panelSearch.SuspendLayout();
             this.SuspendLayout();
-            // 
+
             // tableLayoutMain
-            // 
             this.tableLayoutMain.ColumnCount = 2;
-            this.tableLayoutMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35F));
-            this.tableLayoutMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 65F));
+            this.tableLayoutMain.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35F));
+            this.tableLayoutMain.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65F));
             this.tableLayoutMain.Controls.Add(this.panelInput, 0, 0);
             this.tableLayoutMain.Controls.Add(this.dgwUsers, 1, 0);
             this.tableLayoutMain.Controls.Add(this.panelButtons, 0, 1);
             this.tableLayoutMain.Controls.Add(this.panelSearch, 1, 1);
-            this.tableLayoutMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutMain.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutMain.Name = "tableLayoutMain";
+            this.tableLayoutMain.Dock = DockStyle.Fill;
             this.tableLayoutMain.RowCount = 2;
-            this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 75F));
-            this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutMain.Size = new System.Drawing.Size(900, 500);
-            this.tableLayoutMain.TabIndex = 0;
-            // 
+            this.tableLayoutMain.RowStyles.Add(new RowStyle(SizeType.Percent, 75F));
+            this.tableLayoutMain.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+
             // panelInput
-            // 
             this.panelInput.ColumnCount = 2;
-            this.panelInput.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.panelInput.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.panelInput.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
+            this.panelInput.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             this.panelInput.Controls.Add(this.lblLastName, 0, 0);
             this.panelInput.Controls.Add(this.txtLastName, 1, 0);
             this.panelInput.Controls.Add(this.lblFirstName, 0, 1);
@@ -100,157 +86,74 @@
             this.panelInput.Controls.Add(this.lblPhoto, 0, 6);
             this.panelInput.Controls.Add(this.pbPhoto, 1, 6);
             this.panelInput.Controls.Add(this.btnBrowsePhoto, 1, 7);
-            this.panelInput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelInput.Location = new System.Drawing.Point(3, 3);
-            this.panelInput.Name = "panelInput";
+            this.panelInput.Dock = DockStyle.Fill;
             this.panelInput.RowCount = 8;
-            for (int i = 0; i < 7; i++)
-                this.panelInput.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.panelInput.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.panelInput.Size = new System.Drawing.Size(308, 368);
-            this.panelInput.TabIndex = 0;
-            // 
+            for (int i = 0; i < 8; i++) this.panelInput.RowStyles.Add(new RowStyle(SizeType.Absolute, 45F));
+
+            // Labels
+            this.lblLastName.Text = "Фамилия:"; this.lblLastName.AutoSize = true; this.lblLastName.Anchor = AnchorStyles.Right;
+            this.lblFirstName.Text = "Имя:"; this.lblFirstName.AutoSize = true; this.lblFirstName.Anchor = AnchorStyles.Right;
+            this.lblMiddleName.Text = "Отчество:"; this.lblMiddleName.AutoSize = true; this.lblMiddleName.Anchor = AnchorStyles.Right;
+            this.lblActive.Text = "Активен:"; this.lblActive.AutoSize = true; this.lblActive.Anchor = AnchorStyles.Right;
+            this.lblRegDate.Text = "Дата рег.:"; this.lblRegDate.AutoSize = true; this.lblRegDate.Anchor = AnchorStyles.Right;
+            this.lblGender.Text = "Пол:"; this.lblGender.AutoSize = true; this.lblGender.Anchor = AnchorStyles.Right;
+            this.lblPhoto.Text = "Фото:"; this.lblPhoto.AutoSize = true; this.lblPhoto.Anchor = AnchorStyles.Right;
+
+            // Input controls
+            this.txtLastName.Dock = DockStyle.Fill;
+            this.txtFirstName.Dock = DockStyle.Fill;
+            this.txtMiddleName.Dock = DockStyle.Fill;
+            this.cbActive.AutoSize = true;
+            this.dtpRegDate.Format = DateTimePickerFormat.Short;
+            this.dtpRegDate.Dock = DockStyle.Fill;
+            this.cmbGender.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.cmbGender.Dock = DockStyle.Fill;
+            this.pbPhoto.SizeMode = PictureBoxSizeMode.Zoom;
+            this.pbPhoto.BorderStyle = BorderStyle.FixedSingle;
+            this.pbPhoto.Dock = DockStyle.Fill;
+            this.btnBrowsePhoto.Text = "Обзор...";
+            this.btnBrowsePhoto.Dock = DockStyle.Top;
+            this.btnBrowsePhoto.Click += btnBrowsePhoto_Click;
+
             // dgwUsers
-            // 
-            this.dgwUsers.AllowUserToAddRows = false;
-            this.dgwUsers.AllowUserToDeleteRows = false;
-            this.dgwUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgwUsers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colLastName,
-            this.colFirstName,
-            this.colMiddleName,
-            this.colActive,
-            this.colRegDate,
-            this.colGender,
-            this.colPhoto});
-            this.dgwUsers.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgwUsers.Location = new System.Drawing.Point(317, 3);
-            this.dgwUsers.MultiSelect = false;
-            this.dgwUsers.Name = "dgwUsers";
-            this.dgwUsers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgwUsers.Size = new System.Drawing.Size(580, 368);
-            this.dgwUsers.TabIndex = 1;
-            // 
-            // colLastName
-            // 
-            this.colLastName.HeaderText = "Фамилия";
-            this.colLastName.Name = "colLastName";
-            this.colLastName.Width = 120;
-            // 
-            // colFirstName
-            // 
-            this.colFirstName.HeaderText = "Имя";
-            this.colFirstName.Name = "colFirstName";
-            this.colFirstName.Width = 100;
-            // 
-            // colMiddleName
-            // 
-            this.colMiddleName.HeaderText = "Отчество";
-            this.colMiddleName.Name = "colMiddleName";
-            this.colMiddleName.Width = 120;
-            // 
-            // colActive
-            // 
-            this.colActive.HeaderText = "Активен";
-            this.colActive.Name = "colActive";
-            // 
-            // colRegDate
-            // 
-            this.colRegDate.HeaderText = "Дата регистрации";
-            this.colRegDate.Name = "colRegDate";
-            this.colRegDate.Width = 130;
-            // 
-            // colGender
-            // 
-            this.colGender.HeaderText = "Пол";
-            this.colGender.Name = "colGender";
-            this.colGender.Items.AddRange(new object[] { "М", "Ж" });
-            // 
-            // colPhoto
-            // 
-            this.colPhoto.HeaderText = "Фото";
-            this.colPhoto.Name = "colPhoto";
-            this.colPhoto.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
-            this.colPhoto.Width = 80;
-            // 
+            this.dgwUsers.Dock = DockStyle.Fill;
+
             // panelButtons
-            // 
             this.panelButtons.ColumnCount = 3;
-            this.panelButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
-            this.panelButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
-            this.panelButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
+            for (int i = 0; i < 3; i++) this.panelButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33F));
+            this.panelButtons.RowCount = 2;
+            for (int i = 0; i < 2; i++) this.panelButtons.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             this.panelButtons.Controls.Add(this.btnAdd, 0, 0);
             this.panelButtons.Controls.Add(this.btnEdit, 1, 0);
             this.panelButtons.Controls.Add(this.btnDelete, 2, 0);
             this.panelButtons.Controls.Add(this.btnClear, 0, 1);
             this.panelButtons.Controls.Add(this.btnSaveXml, 1, 1);
             this.panelButtons.Controls.Add(this.btnLoadXml, 2, 1);
-            this.panelButtons.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelButtons.Location = new System.Drawing.Point(3, 377);
-            this.panelButtons.Name = "panelButtons";
-            this.panelButtons.RowCount = 2;
-            this.panelButtons.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.panelButtons.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.panelButtons.Size = new System.Drawing.Size(308, 120);
-            this.panelButtons.TabIndex = 2;
-            // 
-            // btnAdd
-            // 
-            this.btnAdd.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnAdd.Location = new System.Drawing.Point(3, 3);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(96, 54);
-            this.btnAdd.TabIndex = 0;
-            this.btnAdd.Text = "Добавить";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-            // 
+            this.panelButtons.Dock = DockStyle.Fill;
+
+            // Buttons
+            this.btnAdd.Text = "Добавить"; this.btnAdd.Dock = DockStyle.Fill; this.btnAdd.Click += btnAdd_Click;
+            this.btnEdit.Text = "Изменить"; this.btnEdit.Dock = DockStyle.Fill; this.btnEdit.Click += btnEdit_Click;
+            this.btnDelete.Text = "Удалить"; this.btnDelete.Dock = DockStyle.Fill; this.btnDelete.Click += btnDelete_Click;
+            this.btnClear.Text = "Очистить"; this.btnClear.Dock = DockStyle.Fill; this.btnClear.Click += btnClear_Click;
+            this.btnSaveXml.Text = "Сохранить XML"; this.btnSaveXml.Dock = DockStyle.Fill; this.btnSaveXml.Click += btnSaveXml_Click;
+            this.btnLoadXml.Text = "Загрузить XML"; this.btnLoadXml.Dock = DockStyle.Fill; this.btnLoadXml.Click += btnLoadXml_Click;
+
             // panelSearch
-            // 
+            this.panelSearch.Dock = DockStyle.Fill;
             this.panelSearch.Controls.Add(this.lblSearch);
             this.panelSearch.Controls.Add(this.txtSearch);
             this.panelSearch.Controls.Add(this.btnSearch);
-            this.panelSearch.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelSearch.Location = new System.Drawing.Point(317, 377);
-            this.panelSearch.Name = "panelSearch";
-            this.panelSearch.Size = new System.Drawing.Size(580, 120);
-            this.panelSearch.TabIndex = 3;
-            // 
-            // lblSearch
-            // 
-            this.lblSearch.AutoSize = true;
-            this.lblSearch.Location = new System.Drawing.Point(3, 15);
-            this.lblSearch.Name = "lblSearch";
-            this.lblSearch.Size = new System.Drawing.Size(55, 13);
-            this.lblSearch.TabIndex = 0;
-            this.lblSearch.Text = "Поиск:";
-            // 
-            // txtSearch
-            // 
-            this.txtSearch.Location = new System.Drawing.Point(64, 12);
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(200, 20);
-            this.txtSearch.TabIndex = 1;
-            // 
-            // btnSearch
-            // 
-            this.btnSearch.Location = new System.Drawing.Point(270, 10);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(75, 23);
-            this.btnSearch.TabIndex = 2;
-            this.btnSearch.Text = "Найти";
-            this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
-            // 
-            // FormMain
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(900, 500);
+            this.lblSearch.Text = "Поиск:"; this.lblSearch.AutoSize = true;
+            this.txtSearch.Width = 200;
+            this.btnSearch.Text = "Найти"; this.btnSearch.Click += btnSearch_Click;
+
+            // Form
+            this.ClientSize = new Size(900, 500);
             this.Controls.Add(this.tableLayoutMain);
-            this.Name = "FormMain";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "База пользователей (Вариант 16)";
+            this.StartPosition = FormStartPosition.CenterScreen;
+
             this.tableLayoutMain.ResumeLayout(false);
             this.panelInput.ResumeLayout(false);
             this.panelInput.PerformLayout();
@@ -262,43 +165,20 @@
             this.ResumeLayout(false);
         }
 
-        #endregion
-
-        private System.Windows.Forms.TableLayoutPanel tableLayoutMain;
-        private System.Windows.Forms.TableLayoutPanel panelInput;
-        private System.Windows.Forms.Label lblLastName;
-        private System.Windows.Forms.TextBox txtLastName;
-        private System.Windows.Forms.Label lblFirstName;
-        private System.Windows.Forms.TextBox txtFirstName;
-        private System.Windows.Forms.Label lblMiddleName;
-        private System.Windows.Forms.TextBox txtMiddleName;
-        private System.Windows.Forms.Label lblActive;
-        private System.Windows.Forms.CheckBox cbActive;
-        private System.Windows.Forms.Label lblRegDate;
-        private System.Windows.Forms.DateTimePicker dtpRegDate;
-        private System.Windows.Forms.Label lblGender;
-        private System.Windows.Forms.ComboBox cmbGender;
-        private System.Windows.Forms.Label lblPhoto;
-        private System.Windows.Forms.PictureBox pbPhoto;
-        private System.Windows.Forms.Button btnBrowsePhoto;
-        private System.Windows.Forms.DataGridView dgwUsers;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colLastName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colFirstName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colMiddleName;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn colActive;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colRegDate;
-        private System.Windows.Forms.DataGridViewComboBoxColumn colGender;
-        private System.Windows.Forms.DataGridViewImageColumn colPhoto;
-        private System.Windows.Forms.TableLayoutPanel panelButtons;
-        private System.Windows.Forms.Button btnAdd;
-        private System.Windows.Forms.Button btnEdit;
-        private System.Windows.Forms.Button btnDelete;
-        private System.Windows.Forms.Button btnClear;
-        private System.Windows.Forms.Button btnSaveXml;
-        private System.Windows.Forms.Button btnLoadXml;
-        private System.Windows.Forms.FlowLayoutPanel panelSearch;
-        private System.Windows.Forms.Label lblSearch;
-        private System.Windows.Forms.TextBox txtSearch;
-        private System.Windows.Forms.Button btnSearch;
+        private TableLayoutPanel tableLayoutMain;
+        private TableLayoutPanel panelInput;
+        private Label lblLastName, lblFirstName, lblMiddleName, lblActive, lblRegDate, lblGender, lblPhoto;
+        private TextBox txtLastName, txtFirstName, txtMiddleName, txtSearch;
+        private CheckBox cbActive;
+        private DateTimePicker dtpRegDate;
+        private ComboBox cmbGender;
+        private PictureBox pbPhoto;
+        private Button btnBrowsePhoto;
+        private DataGridView dgwUsers;
+        private TableLayoutPanel panelButtons;
+        private Button btnAdd, btnEdit, btnDelete, btnClear, btnSaveXml, btnLoadXml;
+        private FlowLayoutPanel panelSearch;
+        private Label lblSearch;
+        private Button btnSearch;
     }
 }
